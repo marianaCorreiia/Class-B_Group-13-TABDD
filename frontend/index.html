@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#174b3a">
+  <title>Rota | Explorar Portugal</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Rota, início"><span class="brand-mark">R</span><span>rota<span class="brand-period">.</span></span></a>
+    <span class="topbar-note">GUIA LOCAL <span class="status-dot" id="api-status-dot"></span><span id="api-status">A ligar</span></span>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">PORTUGAL · DESCOBERTA LOCAL</p>
+      <h1 id="page-title">O próximo lugar<br><em>fica por descobrir.</em></h1>
+      <p class="intro-copy">Explora espaços, histórias e sabores perto de ti.</p>
+    </section>
+
+    <section class="explorer" aria-label="Explorar pontos de interesse">
+      <div class="explorer-controls">
+        <div class="mode-switch" role="tablist" aria-label="Modo de exploração">
+          <button class="mode-button is-active" id="mode-destination" type="button" role="tab" aria-selected="true">Por destino</button>
+          <button class="mode-button" id="mode-nearby" type="button" role="tab" aria-selected="false">Perto de mim</button>
+        </div>
+
+        <form id="destination-form" class="filter-form">
+          <label class="field field-wide">Destino
+            <select id="destination-select"><option value="">Todos os destinos</option></select>
+          </label>
+          <label class="field">Tipo
+            <select id="type-select">
+              <option value="">Todos</option>
+              <option value="monumento">Monumento</option>
+              <option value="livraria">Livraria</option>
+              <option value="mercado">Mercado</option>
+              <option value="museu">Museu</option>
+              <option value="restaurante">Restaurante</option>
+            </select>
+          </label>
+          <label class="field field-wide">Pesquisar
+            <input id="search-input" type="search" placeholder="Nome ou descrição" minlength="2">
+          </label>
+          <button class="search-button" type="submit"><span aria-hidden="true">⌕</span> Explorar</button>
+        </form>
+
+        <form id="nearby-form" class="filter-form nearby-form" hidden>
+          <label class="field">Latitude
+            <input id="latitude-input" type="number" step="any" min="-90" max="90" value="41.1496" required>
+          </label>
+          <label class="field">Longitude
+            <input id="longitude-input" type="number" step="any" min="-180" max="180" value="-8.6109" required>
+          </label>
+          <label class="field">Raio
+            <select id="radius-select">
+              <option value="500">500 m</option>
+              <option value="2000" selected>2 km</option>
+              <option value="5000">5 km</option>
+              <option value="10000">10 km</option>
+            </select>
+          </label>
+          <label class="field">Tipo
+            <select id="nearby-type-select">
+              <option value="">Todos</option>
+              <option value="monumento">Monumento</option>
+              <option value="livraria">Livraria</option>
+              <option value="mercado">Mercado</option>
+              <option value="museu">Museu</option>
+              <option value="restaurante">Restaurante</option>
+            </select>
+          </label>
+          <button class="search-button" type="submit"><span aria-hidden="true">⌕</span> Procurar perto</button>
+        </form>
+      </div>
+
+      <div class="workspace">
+        <section class="results-column" aria-labelledby="results-title">
+          <div class="results-heading">
+            <div><p class="eyebrow">A TUA SELEÇÃO</p><h2 id="results-title">Pontos de interesse</h2></div>
+            <span class="result-count" id="result-count">0</span>
+          </div>
+          <p class="feedback" id="feedback" role="status" aria-live="polite">A carregar destinos...</p>
+          <div class="poi-list" id="poi-list"></div>
+        </section>
+
+        <aside class="detail-column" aria-label="Detalhe do ponto selecionado">
+          <div class="map-frame">
+            <iframe id="map-frame" title="Mapa OpenStreetMap centrado em Porto" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=-8.63%2C41.13%2C-8.59%2C41.17&amp;layer=mapnik&amp;marker=41.1496%2C-8.6109"></iframe>
+            <a class="map-link" id="map-link" href="https://www.openstreetmap.org/?mlat=41.1496&amp;mlon=-8.6109#map=15/41.1496/-8.6109" target="_blank" rel="noreferrer">Abrir mapa ↗</a>
+          </div>
+          <div class="poi-detail" id="poi-detail">
+            <p class="eyebrow">DETALHE</p>
+            <h2>Escolhe um lugar</h2>
+            <p class="muted">Seleciona um ponto da lista para ver a descrição, localização e reviews.</p>
+          </div>
+          <section class="reviews-section" aria-labelledby="reviews-title">
+            <div class="reviews-heading"><h3 id="reviews-title">Reviews</h3><span id="review-count">0</span></div>
+            <div id="review-list" class="review-list"><p class="muted">Seleciona um POI para consultar as reviews.</p></div>
+          </section>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer><span>ROTA · SMART TOURISM</span><span>Dados servidos pelo MongoDB</span></footer>
+  <script src="/app.js" defer></script>
+</body>
+</html>

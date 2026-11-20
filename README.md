@@ -201,6 +201,8 @@ Medir com `EXPLAIN (ANALYZE, BUFFERS)` e comparar tempo, tipo de scan e *buffers
 
 ## 3. MongoDB (NoSQL)
 
+O script [mongo/schema.js](mongo/schema.js) cria as coleções `destinos`, `pois` e `reviews`, aplica validação JSON Schema e cria os índices desta secção. Executar com `mongosh < mongo/schema.js`. Em coleções existentes, atualiza os validadores sem apagar documentos; o índice único de `destinos.nome` exige que os nomes atuais não tenham duplicados.
+
 ```mermaid
 classDiagram
     class destinos {
@@ -608,3 +610,23 @@ As funcionalidades com mais de uma base (requisito de integração) são: pesqui
 5. Embeddings só de POIs, ou também de destinos.
 6. Mediadores: confirmar a variante embebida no backend (proposta) ou serviços independentes, e a estrutura de pacotes (`routers/`, `services/`, `mediators/`).
 7. Reviews no MongoDB: confirmar a mudança face à versão anterior (o PostgreSQL deixou de ter a tabela `review` e a vista materializada de rating) e a ordem das escritas entre bases.
+
+## 9. PoC MongoDB: backend e frontend
+
+A PoC usa FastAPI, PyMongo e HTML/CSS/JavaScript. O backend lê `MONGODB_URI` de `mongo/atlas-credentials.env` (ficheiro local ignorado pelo Git) e usa `smart_tourism` por omissão. Não colocar credenciais no código nem no README.
+
+Para iniciar em macOS:
+
+```sh
+cd tabdd/Class-B_Group-13-TABDD
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r backend/requirements.txt
+uvicorn app.main:app --app-dir backend --reload
+```
+
+Abrir `http://127.0.0.1:8000`. A documentação interativa da API fica em `http://127.0.0.1:8000/docs`. A interface permite filtrar POIs, pesquisar por proximidade e consultar reviews.
+
+Para carregar dados de demonstração, abrir `mongo/seed.mongodb.js` como MongoDB Playground, selecionar a connection usada para criar o schema e executar. O seed usa `updateOne` com `upsert`, pelo que pode ser executado novamente sem duplicar os documentos.
+
+A criação de reviews não é exposta nesta fatia: segundo o desenho, o serviço deve validar o utilizador através do `PostgresMediator` antes de chamar o MongoDB. O endpoint de leitura de reviews já está disponível.
